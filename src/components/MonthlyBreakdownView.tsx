@@ -2,37 +2,37 @@ import React from "react";
 import { idbService } from "../services/IDBService";
 import { categoryService, Category } from "../services/CategoryService";
 import { formatCentsAsDollars } from "../utils/currency";
-import { getWeekStart, getWeekEnd } from "../utils/date";
+import { getMonthStart, getMonthEnd } from "../utils/date";
 import { Transaction } from "../services/IDBService";
 
-const WeeklyBreakdownView: React.FC = () => {
+const MonthlyBreakdownView: React.FC = () => {
 	const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 	const [categories] = React.useState<Category[]>(
 		categoryService.getCategories()
 	);
-	const [weekStart, weekEnd] = React.useMemo(() => {
+	const [monthStart, monthEnd] = React.useMemo(() => {
 		const now = new Date();
-		return [getWeekStart(now), getWeekEnd(now)];
+		return [getMonthStart(now), getMonthEnd(now)];
 	}, []);
 
 	React.useEffect(() => {
 		const loadData = async () => {
 			const data = await idbService.getTransactionsByDateRange(
-				weekStart,
-				weekEnd
+				monthStart,
+				monthEnd
 			);
 			setTransactions(data);
 		};
 		loadData();
-	}, [weekStart, weekEnd]);
+	}, [monthStart, monthEnd]);
 
 	const total = transactions.reduce((sum, t) => sum + t.amount, 0);
 
 	return (
-		<div className="weekly-breakdown">
-			<h2>Weekly Breakdown</h2>
+		<div className="monthly-breakdown">
+			<h2>Monthly Breakdown</h2>
 			<p>
-				{weekStart.toDateString()} - {weekEnd.toDateString()}
+				{monthStart.toDateString()} - {monthEnd.toDateString()}
 			</p>
 			<div className="total">
 				<span>Total:</span>
@@ -70,4 +70,4 @@ const WeeklyBreakdownView: React.FC = () => {
 	);
 };
 
-export default WeeklyBreakdownView;
+export default MonthlyBreakdownView;

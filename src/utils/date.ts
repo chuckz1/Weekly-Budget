@@ -9,7 +9,7 @@ export function formatDate(date: Date): string {
 export function getWeekStart(date: Date): Date {
 	const d = new Date(date);
 	const day = d.getDay();
-	const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust for Sunday
+	const diff = d.getDate() - day; // Simple subtraction for Sunday start
 	return new Date(d.setDate(diff));
 }
 

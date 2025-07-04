@@ -43,3 +43,8 @@
   - Inline comments for complex logic
   - Consistent TODO/FIXME notation
   - Explanation of non-obvious decisions
+
+## Date Handling
+
+- Week starts on Sunday and ends on Saturday
+- All date calculations should follow this convention
