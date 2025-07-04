@@ -2,18 +2,24 @@ import React from "react";
 import { idbService } from "../services/IDBService";
 import { categoryService, Category } from "../services/CategoryService";
 import { formatCentsAsDollars } from "../utils/currency";
-import { getMonthStart, getMonthEnd } from "../utils/date";
 import { Transaction } from "../services/IDBService";
 
-const MonthlyBreakdownView: React.FC = () => {
+interface MonthlyBreakdownViewProps {
+	startDate: Date;
+	endDate: Date;
+}
+
+const MonthlyBreakdownView: React.FC<MonthlyBreakdownViewProps> = ({
+	startDate,
+	endDate,
+}) => {
 	const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 	const [categories] = React.useState<Category[]>(
 		categoryService.getCategories()
 	);
 	const [monthStart, monthEnd] = React.useMemo(() => {
-		const now = new Date();
-		return [getMonthStart(now), getMonthEnd(now)];
-	}, []);
+		return [startDate, endDate];
+	}, [startDate, endDate]);
 
 	React.useEffect(() => {
 		const loadData = async () => {

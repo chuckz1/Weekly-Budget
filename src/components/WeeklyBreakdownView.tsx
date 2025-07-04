@@ -2,18 +2,24 @@ import React from "react";
 import { idbService } from "../services/IDBService";
 import { categoryService, Category } from "../services/CategoryService";
 import { formatCentsAsDollars } from "../utils/currency";
-import { getWeekStart, getWeekEnd } from "../utils/date";
 import { Transaction } from "../services/IDBService";
 
-const WeeklyBreakdownView: React.FC = () => {
+interface WeeklyBreakdownViewProps {
+	startDate: Date;
+	endDate: Date;
+}
+
+const WeeklyBreakdownView: React.FC<WeeklyBreakdownViewProps> = ({
+	startDate,
+	endDate,
+}) => {
 	const [transactions, setTransactions] = React.useState<Transaction[]>([]);
 	const [categories] = React.useState<Category[]>(
 		categoryService.getCategories()
 	);
 	const [weekStart, weekEnd] = React.useMemo(() => {
-		const now = new Date();
-		return [getWeekStart(now), getWeekEnd(now)];
-	}, []);
+		return [startDate, endDate];
+	}, [startDate, endDate]);
 
 	React.useEffect(() => {
 		const loadData = async () => {
